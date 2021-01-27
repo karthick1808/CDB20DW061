@@ -1,69 +1,88 @@
 apiVersion: apps/v1
-kind: Deployment    
+kind: Deployment
+metadata:
+  name: deployment-jewlr-devus
+  namespace: my-namespace
 spec:
-  containers:
-  - env:
-    - name: CLOUD
-      value: gcp
-    - name: DOMAIN
-      value: jewlr.com
-    - name: ES_SERVICE_NAME
-      value: elasticsearch
-    - name: MODE
-      value: normal
-    - name: NGINX_CONF
-      value: nginx
-    - name: RAILS_ENV
-      value: dev
-    - name: SCOUT_ENABLE
-      value: "true"
-    - name: SCOUT_KEY
-      value: Qzom36MF5mf3AxO62fv3
-    - name: SITE_COUNTRY
-      value: us
-    image: quay.io/jewlr/jewlr4:master
-    imagePullPolicy: Always
-    name: devus
-    ports:
-    - containerPort: 30001
-      hostPort: 30001
-      name: 30001tcp300010
-      protocol: TCP
-      resources:
-        requests:
-          memory: 20000Mi
-      securityContext:
-        allowPrivilegeEscalation: true
-        capabilities: {}
-        privileged: false
-        readOnlyRootFilesystem: false
-        runAsNonRoot: false
-      stdin: true
-      terminationMessagePath: /dev/termination-log
-      terminationMessagePolicy: File
-      tty: true
-      volumeMounts:
-      - mountPath: /var/www/apps/jewlr4/shared/public/packs
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: deployment-jewlr-devus
+  strategy:
+    rollingUpdate:
+      maxSurge: 0
+      maxUnavailable: 1
+    type: RollingUpdate
+  template:
+    metadata:
+      labels:
+        app: deployment-jewlr-devus
+    spec:
+      containers:
+      - env:
+        - name: CLOUD
+          value: gcp
+        - name: DOMAIN
+          value: jewlr.com
+        - name: ES_SERVICE_NAME
+          value: elasticsearch
+        - name: MODE
+          value: normal
+        - name: NGINX_CONF
+          value: nginx
+        - name: RAILS_ENV
+          value: dev
+        - name: SCOUT_ENABLE
+          value: "true"
+        - name: SCOUT_KEY
+          value: Qzom36MF5mf3AxO62fv3
+        - name: SITE_COUNTRY
+          value: us
+        image: quay.io/jewlr/jewlr4:master
+        imagePullPolicy: Always
         name: devus
-        subPath: packs
-      - mountPath: /var/www/apps/jewlr4/shared/public/assets
-        name: devus
-        subPath: assets
-      - mountPath: /var/www/apps/jewlr4/shared/tmp/cache
-        name: devus
-        subPath: cache
-  dnsConfig:
-    options:
-    - name: ndots
-      value: "1"
-  dnsPolicy: ClusterFirst
-  imagePullSecrets:
-  - name: quay
-  restartPolicy: Always
-  schedulerName: default-scheduler
-  securityContext: {}
-  terminationGracePeriodSeconds: 30
-  volumes:
-  - name: devus
-    persistentVolumeClaim:
-      claimName: devus
+        ports:
+        - containerPort: 30001
+          hostPort: 30001
+          name: 30001tcp300010
+          protocol: TCP
+        resources:
+          requests:
+            memory: 20000Mi
+        securityContext:
+          allowPrivilegeEscalation: true
+          capabilities: {}
+          privileged: false
+          readOnlyRootFilesystem: false
+          runAsNonRoot: false
+        stdin: true
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        tty: true
+        volumeMounts:
+        - mountPath: /var/www/apps/jewlr4/shared/public/packs
+          name: devus
+          subPath: packs
+        - mountPath: /var/www/apps/jewlr4/shared/public/assets
+          name: devus
+          subPath: assets
+        - mountPath: /var/www/apps/jewlr4/shared/tmp/cache
+          name: devus
+          subPath: cache
+      dnsConfig:
+        options:
+        - name: ndots
+          value: "1"
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+      - name: quay
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: devus
+        persistentVolumeClaim:
+          claimName: devus
