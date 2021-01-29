@@ -1,0 +1,12 @@
+fruits=("apple","mango","starwberry","apple")
+print(fruits)
+print(type(fruits))
+#fruits[0]="banana"
+#fruits.append("banana")
+a=list(fruits)
+print(a)
+print(type(a))
+a.append("banana")
+print(a)
+b=tuple(a)
+print(b)

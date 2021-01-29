@@ -1,0 +1,13 @@
+fruits=["apple","apple","apple","mango"]
+print(fruits)
+print(type(fruits))
+fruits[1]="strawberry"
+print(fruits)
+fruits.insert(2,"grapes")
+print(fruits)
+print(len(fruits))
+fruits[1:2]=["demo","demo1"]
+print(fruits)
+print(len(fruits))
+fruits[1:4]=["apple","dsadad"]
+print(fruits)

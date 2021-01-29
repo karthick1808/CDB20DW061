@@ -1,0 +1,10 @@
+fruits=["apple","orange","grape"]
+print(fruits)
+print(type(fruits))
+print(len(fruits))
+fruits.append("banana")
+print(fruits)
+print(type(fruits))
+print(len(fruits))
+fruits.append("banana")
+print(fruits)
